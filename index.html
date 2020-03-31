@@ -25,5 +25,26 @@
 <a href="https://github.com/DanielKoohmarey/ThinkAhead/">Think Ahead Application</a>
 <h3>Describe your design for how this would appear to App Inventor users. What new components or properties or methods would you add?</h3>
 <h3>Explain how you would implement change. Would you extend the existing Camera component, or would you create a separate component? You should say which files in the source tree would need to be added and modified, and indicate how they would need to be modified, and how the modifications would take advantage of features in the Android SDK. You don’t have to provide running code, but you might want in include a couple of short code snippets at key points. Your explanation should be clear enough that another developer could do the implementation.</h3>
-<p>hi</p>
+<p>The name pointing out the use of an undocumented, testing feature (CAMERA_FACING) is quite useful as that is the first place to look when a connected feature is no longer working. In looking through the documentation for the Camera I was looking at the YoungAndroidFormUpgrader.java to look at how upgradeCameraProperties() functions and found that the code does not seem to work efficiently as the entire first if statement does nothing to influence outcomes as the second if statement overrides. </p>
+<p>
+if (srcCompVersion < 2) {
+      // The UseFront property was added.
+      // No properties need to be modified to upgrade to version 2.
+      srcCompVersion = 2;
+    }</p><p>
+    if (srcCompVersion < 3) {
+      // The UseFront property was removed, it is not supported in
+      // newer versions of Android
+      if (componentProperties.containsKey("UseFront")) {
+        componentProperties.remove("UseFront");
+        upgradeWarnDialog(MESSAGES.useFrontDeprecated());
+      }
+      srcCompVersion = 3;
+    }</p><p>
+    return srcCompVersion;
+</p>
+<p>In my experience with students they more often than not expect that upon pushing the camera button they will automatically take a picture and are left waiting for feedback from the app when they need to provide the input to take the picture. This leads me to think that not only would the ability to have one input automatically capture the image be useful in creating applications in the way they want but also in removing a point of confusion as the two different options would make it clearer to users. For this reason I would only have one component, Camera, but with two methods instead of the one takePicture() method. I would name them takePictureImmediately() and openCameraToTakePicture(). Both of the new methods will start with the same code as takePicture() in the same place. takePictureImmediately() will need to add the event necessary to automatically trigger the image capture event “(call-component-method 'Camera1 'TakePicture (*list-for-runtime*) '()))”. Not adding another component limits the other changes you need to make but you need to add the methods into the interface to allow users to select and read documentation of each method inside media.md</p>
+<p> Another interesting project that would allow student learning associated with camera but much more complex than what is being discussed here would be the implementation of image filters like they are familiar with in social media. This image editing is quite interesting in the PictureLab of the AP Computer Science A curriculum and even basic RGB altering capacities would be a great learning opportunity in App Inventor</p>
+<p>P.S. typos in a comment are definitely not worth the pull request but seeing “// wether or not we have permission to use the camera” made me laugh because that means something totally different.</p>
+
 
